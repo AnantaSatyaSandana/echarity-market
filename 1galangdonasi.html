@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galang Donasi - E-Charity</title>
+    <link rel="stylesheet" href="gaya/galangdonasi.css">
+    <style>
+        .image-upload {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .image-upload input[type="file"] {
+            display: none;
+        }
+
+        .image-upload img {
+            width: 100%;
+            height: auto;
+            display: none;
+        }
+
+        .image-upload span {
+            display: block;
+            width: 100%;
+            height: 200px;
+            border: 1px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <div class="logo">
+            <a href="1homefix.php"><p>E-Charity</p></a>
+        </div>
+
+        <div class="right-links">
+            <a href="1akun.php"><button class="btn">Akun Saya</button></a>
+        </div>
+    </div>
+    <div class="container">
+        <main>
+            <section class="form-section">
+                <h2>Galang Donasi</h2>
+                <form action="submit_form.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                    <div class="form-group">
+                        <label for="image">Gambar</label>
+                        <div class="image-upload">
+                            <input type="file" id="image" name="image" accept="image/*">
+                            <span>+Add Image</span>
+                            <img id="image-preview" src="#" alt="Image Preview">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Judul</label>
+                        <input type="text" id="title" name="title" onkeydown="return event.key !== 'Enter';">
+                    </div>
+                    <div class="form-group">
+                        <label for="story">Cerita Penggalangan</label>
+                        <textarea id="story" name="story" rows="5" onkeydown="handleKeyPress(event, this);"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Kebutuhan Donasi</label>
+                        <div class="needs">
+                            <textarea id="food" name="needs_food" rows="2" placeholder="Makanan" onkeydown="handleKeyPress(event, this);"></textarea>
+                            <textarea id="clothes" name="needs_clothes" rows="2" placeholder="Pakaian" onkeydown="handleKeyPress(event, this);"></textarea>
+                            <textarea id="medicine" name="needs_medicine" rows="2" placeholder="Obat - Obatan" onkeydown="handleKeyPress(event, this);"></textarea>
+                            <textarea id="others" name="needs_others" rows="2" placeholder="Lainnya" onkeydown="handleKeyPress(event, this);"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="deadline">Tenggat Waktu</label>
+                        <input type="date" id="deadline" name="deadline" onkeydown="return event.key !== 'Enter';">
+                    </div>
+                    <button type="submit" class="submit-btn">Submit</button>
+                </form>
+            </section>
+        </main>
+    </div>
+    <script>
+        document.querySelector('.image-upload span').addEventListener('click', function() {
+            document.getElementById('image').click();
+        });
+
+        document.getElementById('image').addEventListener('change', function() {
+            var file = this.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('image-preview').src = e.target.result;
+                    document.getElementById('image-preview').style.display = 'block';
+                    document.querySelector('.image-upload span').style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function handleKeyPress(event, textarea) {
+            if (event.key === 'Enter' && event.shiftKey) {
+                // Add a newline character without submitting the form
+                textarea.value += '\n';
+                event.preventDefault(); // Prevent default behavior of Enter key
+            }
+        }
+
+        function validateForm() {
+            // Add any additional validation here if needed
+            return true; // Return true to allow form submission
+        }
+    </script>
+</body>
+</html>
